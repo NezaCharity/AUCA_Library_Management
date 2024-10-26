@@ -20,30 +20,30 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>BorrowBookServlet</servlet-name>
-        <url-pattern>/borrowbookservlet</url-pattern>
+        <url-pattern>/borrowBookservlet</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.auca.library.LoginServlet</servlet-class>
+        <servlet-name>LibrarianServlet</servlet-name>
+        <servlet-class>com.auca.library.LibrarianServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/loginServlet</url-pattern>
+        <servlet-name>LibrarianServlet</servlet-name>
+        <url-pattern>/librarianServlet</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.auca.library.LoginServlet</servlet-class>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.auca.library.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/loginServlet</url-pattern>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/registerServlet</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.auca.library.LoginServlet</servlet-class>
+        <servlet-name>ReturnBookServlet</servlet-name>
+        <servlet-class>com.auca.library.ReturnBookServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/loginServlet</url-pattern>
+        <servlet-name>ReturnBookServlet</servlet-name>
+        <url-pattern>/returnBookServlet</url-pattern>
     </servlet-mapping>
 </web-app>

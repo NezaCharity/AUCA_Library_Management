@@ -2,10 +2,12 @@
 
 package com.auca.library;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 @WebServlet("/registerServlet")
 public class RegisterServlet extends HttpServlet {
@@ -15,25 +17,33 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String role = request.getParameter("role");
         String membership = request.getParameter("membership");
+        String location = request.getParameter("location");
 
-        String hashedPassword = hashPassword(password);
+        boolean isRegistered = saveUserToDatabase(username, password, role, membership, location);
 
-        // Save user in DB (pseudo-code, replace with actual DB insertion)
-        boolean success = saveUserToDatabase(username, hashedPassword, role, membership);
-
-        if (success) {
+        if (isRegistered) {
             response.sendRedirect("login.jsp?message=registered");
         } else {
             response.sendRedirect("register.jsp?error=registrationFailed");
         }
     }
 
-    private String hashPassword(String password) {
-        // Placeholder for hashing logic
-        return password; // Implement hashing like BCrypt here
-    }
+    private boolean saveUserToDatabase(String username, String password, String role, String membership, String location) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "INSERT INTO users (username, password, role, membership, location_id) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
 
-    private boolean saveUserToDatabase(String username, String password, String role, String membership) {
-        return true; // Implement actual DB insertion
+            statement.setString(1, username);
+            statement.setString(2, password); // For security, hash the password before saving
+            statement.setString(3, role);
+            statement.setString(4, membership);
+            statement.setString(5, location);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

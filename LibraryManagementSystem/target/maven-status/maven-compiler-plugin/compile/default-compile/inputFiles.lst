@@ -3,3 +3,4 @@
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/RegisterServlet.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/BorrowBookServlet.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/LoginServlet.java
+/home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/DatabaseConnection.java

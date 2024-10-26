@@ -2,57 +2,52 @@
 
 package com.auca.library;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 @WebServlet("/loginServlet")
 public class LoginServlet extends HttpServlet {
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get username and password from the form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Placeholder: Verify credentials (replace with actual database check)
-        if (authenticateUser(username, password)) {
-            // Get user role (replace with actual retrieval from database)
-            String role = getUserRole(username);
+        String role = authenticateUser(username, password);
 
-            // Store user info in session
+        if (role != null) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
             session.setAttribute("role", role);
 
-            // Redirect based on role
             if ("librarian".equals(role)) {
                 response.sendRedirect("WEB-INF/jsp/librarianInterface.jsp");
             } else {
                 response.sendRedirect("jsp/browseBooks.jsp");
             }
         } else {
-            // If authentication fails, redirect back to login page with an error message
             response.sendRedirect("login.jsp?error=invalid");
         }
     }
 
-    // Placeholder method for user authentication
-    private boolean authenticateUser(String username, String password) {
-        // TODO: Replace with actual authentication logic (e.g., checking against a hashed password in the database)
-        return "admin".equals(username) && "password".equals(password);
-    }
+    private String authenticateUser(String username, String password) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            statement.setString(2, password); // Add hashing if implemented
 
-    // Placeholder method to retrieve user role
-    private String getUserRole(String username) {
-        // TODO: Replace with actual role retrieval from database
-        if ("admin".equals(username)) {
-            return "librarian";
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("role");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return "student";
+        return null;
     }
 }
