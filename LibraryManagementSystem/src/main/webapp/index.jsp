@@ -13,7 +13,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #333;
             text-align: center;
             padding: 0 20px;
         }
