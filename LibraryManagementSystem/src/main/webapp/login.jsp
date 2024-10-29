@@ -22,6 +22,7 @@
         <input type="password" id="password" name="password" required>
         
         <button type="submit">Login</button>
+        <p>Don't have an account? <a href="register.jsp">register here</a></p>
     </form>
     <footer>
         <p>&copy; 2024 AUCA Library</p>

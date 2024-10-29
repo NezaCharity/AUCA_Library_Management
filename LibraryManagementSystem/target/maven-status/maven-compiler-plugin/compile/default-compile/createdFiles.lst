@@ -2,5 +2,6 @@ com/auca/library/LibrarianServlet.class
 com/auca/library/ReturnBookServlet.class
 com/auca/library/BorrowBookServlet.class
 com/auca/library/DatabaseConnection.class
+com/auca/library/PasswordUtils.class
 com/auca/library/RegisterServlet.class
 com/auca/library/LoginServlet.class

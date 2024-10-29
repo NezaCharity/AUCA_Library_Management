@@ -17,29 +17,46 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        String role = authenticateUser(username, password);
+        // Hash the entered password for comparison
+        String hashedPassword = PasswordUtils.hashPassword(password);
+
+        String role = authenticateUser(username, hashedPassword);
 
         if (role != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("role", role);
+            session.setAttribute("username", username);  // Username retrieved from login
+            session.setAttribute("role", role);      // userRole should be assigned based on the user's role
+            
+            
 
-            if ("librarian".equals(role)) {
-                response.sendRedirect("WEB-INF/jsp/librarianInterface.jsp");
-            } else {
-                response.sendRedirect("jsp/browseBooks.jsp");
+            // Redirect based on role
+            switch (role) {
+                case "librarian":
+                    response.sendRedirect("webapp/librarianDashboard.jsp");
+                    break;
+                case "teacher":
+                    response.sendRedirect("webapp/teacherDashboard.jsp");
+                    break;
+                case "student":
+                response.sendRedirect(request.getContextPath() + "/studentDashboard.jsp");
+
+                    break;
+                default:
+                    // If the role doesn't match any specific dashboard, redirect to a generic page or show an error
+                    response.sendRedirect("login.jsp?error=invalidRole");
             }
         } else {
-            response.sendRedirect("login.jsp?error=invalid");
+            // Invalid login, redirect back to login page with an error message
+            response.sendRedirect("login.jsp?error=invalidCredentials");
         }
     }
 
-    private String authenticateUser(String username, String password) {
+    private String authenticateUser(String username, String hashedPassword) {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
-            statement.setString(2, password); // Add hashing if implemented
+            statement.setString(2, hashedPassword);
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
