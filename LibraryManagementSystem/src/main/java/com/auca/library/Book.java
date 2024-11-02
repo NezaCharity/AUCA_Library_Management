@@ -66,4 +66,10 @@ public class Book {
     public void setStatus(String status) {
         this.status = status;
     }
+    // Additional constructor to initialize only id and title
+public Book(int id, String title) {
+    this.id = id;
+    this.title = title;
+}
+
 }

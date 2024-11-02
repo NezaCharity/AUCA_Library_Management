@@ -39,6 +39,11 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
         List<Book> availableBooks = getAvailableBooks();
         request.setAttribute("availableBooks", availableBooks);
         request.getRequestDispatcher("viewBooks.jsp").forward(request, response);
+    }else if("inventoryReport".equals(action)) {
+            List<RoomInventory> roomInventories = getRoomInventories();
+            request.setAttribute("roomInventories", roomInventories);
+            request.getRequestDispatcher("inventoryReport.jsp").forward(request, response);
+        
 
     } else if ("manageBooks".equals(action)) {
         List<Book> books = getBooks();
@@ -173,7 +178,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
             ResultSet resultSet = statement.executeQuery();
     
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+               int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 rooms.add(new Room(id, name));
             }
@@ -375,6 +380,7 @@ private List<BorrowedBook> getBorrowedBooks(String username) {
                          "GROUP BY r.name";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
+    
             while (resultSet.next()) {
                 String roomName = resultSet.getString("roomName");
                 int bookCount = resultSet.getInt("bookCount");
@@ -385,4 +391,5 @@ private List<BorrowedBook> getBorrowedBooks(String username) {
         }
         return roomInventories;
     }
+    
 }

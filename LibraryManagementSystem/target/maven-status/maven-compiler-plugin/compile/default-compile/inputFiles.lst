@@ -1,7 +1,9 @@
+/home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/AssignShelfServlet.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/LibrarianServlet.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/RegisterServlet.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/BorrowBookServlet.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/BorrowedBook.java
+/home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/AssignRoomServlet.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/PasswordUtils.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/Room.java
 /home/charityneza/repos/mid_testing_22998/LibraryManagementSystem/src/main/java/com/auca/library/RegisterBookServlet.java

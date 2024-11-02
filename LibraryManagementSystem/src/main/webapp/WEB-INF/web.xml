@@ -20,14 +20,13 @@
     </servlet-mapping>
 
    <servlet>
-    <servlet-name>BorrowBookServlet</servlet-name>
-    <servlet-class>com.auca.library.BorrowBookServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-    <servlet-name>BorrowBookServlet</servlet-name>
-    <url-pattern>/BorrowBookServlet</url-pattern>
-</servlet-mapping>
-
+        <servlet-name>BorrowBookServlet</servlet-name>
+        <servlet-class>com.auca.library.BorrowBookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BorrowBookServlet</servlet-name>
+        <url-pattern>/BorrowBookServlet</url-pattern>
+    </servlet-mapping>
 
     <servlet>
     <servlet-name>LibrarianServlet</servlet-name>
@@ -79,6 +78,24 @@
     <servlet-name>RegisterBookServlet</servlet-name>
     <url-pattern>/RegisterBookServlet</url-pattern>
 </servlet-mapping>
+ <servlet>
+        <servlet-name>AssignShelfServlet</servlet-name>
+        <servlet-class>com.auca.library.AssignShelfServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AssignShelfServlet</servlet-name>
+        <url-pattern>/AssignShelfServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- Assign Room Servlet -->
+    <servlet>
+        <servlet-name>AssignRoomServlet</servlet-name>
+        <servlet-class>com.auca.library.AssignRoomServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AssignRoomServlet</servlet-name>
+        <url-pattern>/AssignRoomServlet</url-pattern>
+    </servlet-mapping>
 
 
 </web-app>

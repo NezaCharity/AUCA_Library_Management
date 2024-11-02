@@ -7,9 +7,11 @@ com/auca/library/DatabaseConnection.class
 com/auca/library/RegisterServlet.class
 com/auca/library/LoginServlet.class
 com/auca/library/LibrarianServlet.class
+com/auca/library/AssignShelfServlet.class
 com/auca/library/PhoneLookupServlet.class
 com/auca/library/Shelf.class
 com/auca/library/StudentDashboardServlet.class
 com/auca/library/Room.class
+com/auca/library/AssignRoomServlet.class
 com/auca/library/PasswordUtils.class
 com/auca/library/RegisterBookServlet.class

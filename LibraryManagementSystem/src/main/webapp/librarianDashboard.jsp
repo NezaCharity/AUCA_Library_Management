@@ -95,14 +95,14 @@
         <!-- Quick Links -->
         <div class="quick-links">
             <div class="link-card">
-                <a href="LibrarianServlet?action=manageBooks.jsp">📚 Manage Books</a>
+                <a href="LibrarianServlet?action=manageBooks">📚 Manage Books</a>
                <br>
                <a href="manageBooks.jsp">Click here to manage your books</a>
                 <p>Add, edit, or delete books from the library collection.</p>
             </div>
             <div class="link-card">
                 
-                <a href="LibrarianServlet?action=approveMembers.jsp">✔️ Approve Members</a>
+                <a href="LibrarianServlet?action=approveMembers">✔️ Approve Members</a>
                <br>
                <a href="approveMembers.jsp">click here to approve members</a>
               
@@ -111,23 +111,24 @@
             </div>
             <div class="link-card">
                 
-                <a href="LibrarianServlet?action=assignShelf.jsp">🗄️ Assign Shelf</a>
+                <a href="LibrarianServlet?action=assignShelf">🗄️ Assign Shelf</a>
                 <br>
-                <a href="assignShelf.jsp">click here to assign shelf</a>
+                <a href="AssignShelfServlet?action=assignShelf"> click here to Assign Shelf</a>
+
                
                 <p>Assign books to a specific shelf in the library.</p>
             </div>
             <div class="link-card">
                
-                <a href="LibrarianServlet?action=assignRoom.jsp">🏢 Assign Room</a>
+                <a href="LibrarianServlet?action=assignRoom">🏢 Assign Room</a>
                 <br>
-                <a href="assignRoom.jsp">click here to assign room</a>
+                <a href="AssignRoomServlet?action=assignRoom"> click here to Assign Rooms</a>
                
                 <p>Assign shelves to a specific room in the library.</p>
             </div>
             <div class="link-card">
                 
-                <a href="LibrarianServlet?action=registerBook.jsp">📖 Register Book</a>
+                <a href="LibrarianServlet?action=registerBook">📖 Register Book</a>
                 <br>
                 <a href="registerBook.jsp">click here to register your Books</a>
                
@@ -135,7 +136,7 @@
             </div>
             <div class="link-card">
                 
-                <a href="LibrarianServlet?action=inventoryReport.jsp">📊 Inventory Report</a>
+                <a href="LibrarianServlet?action=inventoryReport">📊 Inventory Report</a>
                 <br>
                 <a href="inventoryReport">click here to check your inventory</a>
                
