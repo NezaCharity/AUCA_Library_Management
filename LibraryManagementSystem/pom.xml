@@ -24,12 +24,35 @@
     <artifactId>mysql-connector-java</artifactId>
     <version>8.0.30</version> <!-- Use the latest version compatible with your setup -->
 </dependency>
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>5.0.0</version>
-      <scope>provided</scope>
-    </dependency>
+  
+  <!-- Jakarta Servlet API for handling HTTP requests -->
+<dependency>
+    <groupId>jakarta.servlet</groupId>
+    <artifactId>jakarta.servlet-api</artifactId>
+    <version>5.0.0</version>
+    <scope>provided</scope>
+</dependency>
+
+<!-- Add other Jakarta dependencies as needed, such as: -->
+
+<!-- Jakarta Faces API for JavaServer Faces -->
+<dependency>
+    <groupId>jakarta.faces</groupId>
+    <artifactId>jakarta.faces-api</artifactId>
+    <version>3.0.0</version>
+    <scope>provided</scope>
+</dependency>
+
+<!-- Jakarta Persistence API for JPA -->
+<dependency>
+    <groupId>jakarta.persistence</groupId>
+    <artifactId>jakarta.persistence-api</artifactId>
+    <version>3.0.0</version>
+    <scope>provided</scope>
+</dependency>
+
+
+
   </dependencies>
   <build>
     <finalName>LibraryManagementSystem</finalName>

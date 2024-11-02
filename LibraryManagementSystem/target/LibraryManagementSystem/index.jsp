@@ -26,7 +26,7 @@
             margin-bottom: 20px;
         }
         .btn-primary {
-            background-color: #4CAF50;
+            background-color: #00447b;
             color: white;
             padding: 15px 30px;
             border: none;
@@ -36,7 +36,7 @@
             text-decoration: none;
         }
         .btn-primary:hover {
-            background-color: #45a049;
+            background-color: #00447b;
         }
         .features {
             display: flex;
@@ -53,7 +53,7 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
         .feature-card h3 {
-            color: #4CAF50;
+            color: #00447b;
             margin-bottom: 15px;
         }
         .footer {
@@ -92,7 +92,8 @@
         <div class="feature-card">
             <h3>Librarian Dashboard</h3>
             <p>Manage books, approve memberships, and organize the library efficiently with dedicated tools.</p>
-            <button onclick="navigateTo('jsp/librarianInterface.jsp')" class="btn-primary">Manage Library</button>
+            <p> <b>You need to login as a librarian</b> </p>
+            <button onclick="navigateTo('login.jsp')" class="btn-primary">Manage Library</button>
         </div>
     </section>
 </div>

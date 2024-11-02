@@ -21,6 +21,9 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required pattern="[0-9]{10}" placeholder="e.g., 0781234567">
+
             <label for="role">Role:</label>
             <select id="role" name="role" required>
                 <option value="student">Student</option>
@@ -39,31 +42,34 @@
 
             <!-- Location Fields -->
             <h3>Location</h3>
+            <label for="province">Province:</label>
+            <select id="province" name="province" required onchange="updateDistricts()">
+                <option value="">Select Province</option>
+                <option value="East">East</option>
+                <option value="North">North</option>
+                <option value="West">West</option>
+                <option value="South">South</option>
+                <option value="Kigali">Kigali</option>
+            </select>
 
             <label for="district">District:</label>
             <select id="district" name="district" required onchange="updateSectors()">
                 <option value="">Select District</option>
-                <option value="Gasabo">Gasabo</option>
-                <option value="Kicukiro">Kicukiro</option>
-                <option value="Nyarugenge">Nyarugenge</option>
             </select>
 
             <label for="sector">Sector:</label>
             <select id="sector" name="sector" required onchange="updateCells()">
                 <option value="">Select Sector</option>
-                <!-- Options will be populated by JavaScript -->
             </select>
 
             <label for="cell">Cell:</label>
             <select id="cell" name="cell" required onchange="updateVillages()">
                 <option value="">Select Cell</option>
-                <!-- Options will be populated by JavaScript -->
             </select>
 
             <label for="village">Village:</label>
             <select id="village" name="village" required>
                 <option value="">Select Village</option>
-                <!-- Options will be populated by JavaScript -->
             </select>
 
             <button type="submit">Register</button>
@@ -72,62 +78,77 @@
     </div>
 </div>
 
-<!-- JavaScript to Dynamically Update Sectors, Cells, and Villages -->
+<!-- JavaScript to Dynamically Update Districts, Sectors, Cells, and Villages -->
 <script>
+    const districtsByProvince = {
+        "East": ["Nyagatare", "Rwamagana", "Kayonza"],
+        "North": ["Musanze", "Gicumbi", "Rulindo"],
+        "West": ["Rubavu", "Karongi", "Nyamasheke"],
+        "South": ["Huye", "Nyanza", "Gisagara"],
+        "Kigali": ["Gasabo", "Kicukiro", "Nyarugenge"]
+    };
+
     const sectorsByDistrict = {
-        "Gasabo": ["Kimironko", "Kacyiru", "Remera", "Gisozi"],
-        "Kicukiro": ["Kicukiro", "Gahanga", "Kagarama", "Niboye"],
-        "Nyarugenge": ["Nyamirambo", "Nyakabanda", "Kimisagara"]
+        "Nyagatare": ["Nyagatare", "Katabagemu", "Rukomo"],
+        "Rwamagana": ["Rwamagana", "Muhazi", "Gishari"],
+        "Kayonza": ["Kayonza", "Mukarange", "Murundi"],
+        "Musanze": ["Musanze", "Kinigi", "Busogo"],
+        "Gicumbi": ["Gicumbi", "Rutare", "Mutete"],
+        "Rulindo": ["Rulindo", "Shyorongi", "Kisaro"],
+        "Rubavu": ["Rubavu", "Nyamyumba", "Kanama"],
+        "Karongi": ["Karongi", "Murambi", "Mubuga"],
+        "Nyamasheke": ["Nyamasheke", "Kanjongo", "Karambi"],
+        "Huye": ["Huye", "Mbazi", "Rusatira"],
+        "Nyanza": ["Nyanza", "Busasamana", "Mukingo"],
+        "Gisagara": ["Gisagara", "Kansi", "Mamba"],
+        "Gasabo": ["Kacyiru", "Kimironko", "Remera"],
+        "Kicukiro": ["Kicukiro", "Niboye", "Kanombe"],
+        "Nyarugenge": ["Nyamirambo", "Gitega", "Muhima"]
     };
 
     const cellsBySector = {
-        "Kimironko": ["Bibare", "Kibagabaga", "Nyagatovu"],
+        "Nyagatare": ["Nyagatare Cell 1", "Nyagatare Cell 2"],
+        "Katabagemu": ["Katabagemu Cell 1", "Katabagemu Cell 2"],
+        "Rukomo": ["Rukomo Cell 1", "Rukomo Cell 2"],
         "Kacyiru": ["Gacuriro", "Nyarutarama"],
-        "Remera": ["Rukiri I", "Rukiri II"],
-        "Gisozi": ["Murama", "Nyamabuye"],
-        "Kicukiro": ["Kicukiro Centre", "Nyanza"],
-        "Gahanga": ["Kabuga", "Kagasa"],
-        "Kagarama": ["Kanombe", "Mageragere"],
-        "Niboye": ["Rubirizi", "Gikondo"],
-        "Nyamirambo": ["Mumena", "Rugarama"],
-        "Nyakabanda": ["Nyakabanda I", "Nyakabanda II"],
-        "Kimisagara": ["Agatare", "Biryogo"]
+        "Kimironko": ["Bibare", "Kibagabaga"],
+        "Remera": ["Rukiri I", "Rukiri II"]
     };
 
     const villagesByCell = {
-        "Bibare": ["Ingenzi", "Imena", "Imitari"],
-        "Kibagabaga": ["Akintwari", "Kageyo", "Gasharu"],
-        "Nyagatovu": ["Ijabiro", "Isangano"],
-        "Gacuriro": ["Kagarama", "Kigabiro"],
-        "Nyarutarama": ["Nyakabingo", "Kinyinya"],
-        "Rukiri I": ["Agatenga", "Gikondo"],
-        "Rukiri II": ["Imena", "Rwampara"],
-        "Murama": ["Gihogere", "Kabuga"],
-        "Nyamabuye": ["Ubumwe", "Giticyinyoni"],
-        "Kicukiro Centre": ["Nyarugunga", "Rwabugiri"],
-        "Nyanza": ["Kabuga", "Mageragere"],
-        "Kabuga": ["Akabuga", "Kigina"],
-        "Kagasa": ["Kinyinya", "Nyarubuye"],
-        "Kanombe": ["Gahoromani", "Gikoma"],
-        "Mageragere": ["Gikomero", "Gasogi"],
-        "Rubirizi": ["Kabeza", "Kabuga"],
-        "Gikondo": ["Nyanza I", "Nyanza II"],
-        "Mumena": ["Akabuga", "Rwampala"],
-        "Rugarama": ["Kabirizi", "Kinyinya"],
-        "Nyakabanda I": ["Cyahafi", "Nyarubuye"],
-        "Nyakabanda II": ["Nyanza", "Kabeza"],
-        "Agatare": ["Nyabisindu", "Gisozi"],
-        "Biryogo": ["Gikondo", "Remera"]
+        "Nyagatare Cell 1": ["Village A", "Village B"],
+        "Nyagatare Cell 2": ["Village C", "Village D"],
+        "Gacuriro": ["Village G1", "Village G2"],
+        "Nyarutarama": ["Village N1", "Village N2"],
+        "Bibare": ["Village B1", "Village B2"],
+        "Kibagabaga": ["Village K1", "Village K2"]
     };
 
-    function updateSectors() {
+    function updateDistricts() {
+        const province = document.getElementById("province").value;
         const districtSelect = document.getElementById("district");
-        const sectorSelect = document.getElementById("sector");
-        const selectedDistrict = districtSelect.value;
+        districtSelect.innerHTML = '<option value="">Select District</option>';
+        
+        if (districtsByProvince[province]) {
+            districtsByProvince[province].forEach(district => {
+                const option = document.createElement("option");
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+            });
+        }
+        document.getElementById("sector").innerHTML = '<option value="">Select Sector</option>';
+        document.getElementById("cell").innerHTML = '<option value="">Select Cell</option>';
+        document.getElementById("village").innerHTML = '<option value="">Select Village</option>';
+    }
 
+    function updateSectors() {
+        const district = document.getElementById("district").value;
+        const sectorSelect = document.getElementById("sector");
         sectorSelect.innerHTML = '<option value="">Select Sector</option>';
-        if (sectorsByDistrict[selectedDistrict]) {
-            sectorsByDistrict[selectedDistrict].forEach(sector => {
+        
+        if (sectorsByDistrict[district]) {
+            sectorsByDistrict[district].forEach(sector => {
                 const option = document.createElement("option");
                 option.value = sector;
                 option.textContent = sector;
@@ -139,13 +160,12 @@
     }
 
     function updateCells() {
-        const sectorSelect = document.getElementById("sector");
+        const sector = document.getElementById("sector").value;
         const cellSelect = document.getElementById("cell");
-        const selectedSector = sectorSelect.value;
-
         cellSelect.innerHTML = '<option value="">Select Cell</option>';
-        if (cellsBySector[selectedSector]) {
-            cellsBySector[selectedSector].forEach(cell => {
+        
+        if (cellsBySector[sector]) {
+            cellsBySector[sector].forEach(cell => {
                 const option = document.createElement("option");
                 option.value = cell;
                 option.textContent = cell;
@@ -156,13 +176,12 @@
     }
 
     function updateVillages() {
-        const cellSelect = document.getElementById("cell");
+        const cell = document.getElementById("cell").value;
         const villageSelect = document.getElementById("village");
-        const selectedCell = cellSelect.value;
-
         villageSelect.innerHTML = '<option value="">Select Village</option>';
-        if (villagesByCell[selectedCell]) {
-            villagesByCell[selectedCell].forEach(village => {
+        
+        if (villagesByCell[cell]) {
+            villagesByCell[cell].forEach(village => {
                 const option = document.createElement("option");
                 option.value = village;
                 option.textContent = village;

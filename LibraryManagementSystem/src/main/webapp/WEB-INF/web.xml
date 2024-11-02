@@ -2,8 +2,13 @@
 
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
-         version="4.0">
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+<welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+</welcome-file-list>
+
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -15,21 +20,24 @@
     </servlet-mapping>
 
    <servlet>
-        <servlet-name>BorrowBookServlet</servlet-name>
-        <servlet-class>com.auca.library.BorrowBookServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>BorrowBookServlet</servlet-name>
-        <url-pattern>/borrowBookservlet</url-pattern>
-    </servlet-mapping>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <servlet-class>com.auca.library.BorrowBookServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <url-pattern>/BorrowBookServlet</url-pattern>
+</servlet-mapping>
+
+
     <servlet>
-        <servlet-name>LibrarianServlet</servlet-name>
-        <servlet-class>com.auca.library.LibrarianServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LibrarianServlet</servlet-name>
-        <url-pattern>/librarianServlet</url-pattern>
-    </servlet-mapping>
+    <servlet-name>LibrarianServlet</servlet-name>
+    <servlet-class>com.auca.library.LibrarianServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>LibrarianServlet</servlet-name>
+    <url-pattern>/LibrarianServlet</url-pattern>
+</servlet-mapping>
+
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.auca.library.RegisterServlet</servlet-class>
@@ -46,4 +54,31 @@
         <servlet-name>ReturnBookServlet</servlet-name>
         <url-pattern>/returnBookServlet</url-pattern>
     </servlet-mapping>
+   
+<servlet>
+    <servlet-name>PhoneLookupServlet</servlet-name>
+    <servlet-class>com.auca.library.PhoneLookupServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>PhoneLookupServlet</servlet-name>
+    <url-pattern>/PhoneLookupServlet</url-pattern>
+</servlet-mapping>
+<servlet>
+    <servlet-name>StudentDashboardServelt</servlet-name>
+    <servlet-class>com.auca.library.StudentDashboardServelt</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>StudentDashboardServelt</servlet-name>
+    <url-pattern>/StudentDashboardServelt</url-pattern>
+</servlet-mapping>
+<servlet>
+    <servlet-name>RegisterBookServlet</servlet-name>
+    <servlet-class>com.auca.library.RegisterBookServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>RegisterBookServlet</servlet-name>
+    <url-pattern>/RegisterBookServlet</url-pattern>
+</servlet-mapping>
+
+
 </web-app>

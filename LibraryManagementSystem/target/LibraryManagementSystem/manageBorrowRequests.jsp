@@ -1,13 +1,12 @@
 <!-- src/main/webapp/WEB-INF/jsp/manageBorrowRequests.jsp -->
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%
     HttpSession session = request.getSession(false);
     String role = (String) session.getAttribute("role");
 
     if (session == null || role == null || !"librarian".equals(role)) {
-        response.sendRedirect("login.jsp?error=accessDenied");
+        response.sendRedirect("../login.jsp?error=accessDenied");
         return;
     }
 %>

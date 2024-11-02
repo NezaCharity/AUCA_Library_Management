@@ -1,22 +1,26 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, java.util.ArrayList, com.auca.library.BorrowedBook" %>
 <%
-    // Check if the session is valid and the user has the correct role
     if (session == null || session.getAttribute("role") == null) {
         response.sendRedirect(request.getContextPath() + "/login.jsp?error=accessDenied");
         return;
     }
 
     String role = (String) session.getAttribute("role");
-
     if (!"student".equals(role) && !"teacher".equals(role)) {
         response.sendRedirect(request.getContextPath() + "/login.jsp?error=accessDenied");
         return;
     }
 
-    // Retrieve other session data as needed
     String username = (String) session.getAttribute("username");
-    int borrowedBooksCount = 3;
-    int overdueFines = 15;
+    int borrowedBooksCount = (request.getAttribute("borrowedBooksCount") != null) ? (int) request.getAttribute("borrowedBooksCount") : 0;
+    int overdueFines = (request.getAttribute("overdueFines") != null) ? (int) request.getAttribute("overdueFines") : 0;
+    List<BorrowedBook> borrowedBooks = (List<BorrowedBook>) request.getAttribute("borrowedBooks");
+    if (borrowedBooks == null) {
+        borrowedBooks = new ArrayList<>();  // Initialize with an empty list if null
+    }
 %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -135,77 +139,64 @@
 </head>
 
 <body>
-<div class="dashboard-container">
-    <div class="header">
-        <h2>Welcome, <%= username %></h2>
-        <p>Your Library Account Overview</p>
-        <div>
-            <span>Borrowed Books: <strong><%= borrowedBooksCount %></strong></span> |
-            <span>Overdue Fines: <strong>$<%= overdueFines %></strong></span>
+    <div class="dashboard-container">
+        <div class="header">
+            <h2>Welcome, <%= username %></h2>
+            <p>Your Library Account Overview</p>
+            <div>
+                <span>Borrowed Books: <strong><%= borrowedBooksCount %></strong></span> |
+                <span>Overdue Fines: <strong>$<%= overdueFines %></strong></span>
+            </div>
         </div>
-    </div>
+    
+        <!-- Quick Links -->
+        <div class="quick-links">
+            <div class="link-card">
+                <a href="LibrarianServlet?action=viewAvailableBooks">📚 View Available Books</a>
 
-    <!-- Quick Links -->
-    <div class="quick-links">
-        <div class="link-card">
-            <a href="<%= request.getContextPath() %>/viewBooks.jsp">📚 View Available Books</a>
-            <p>Browse the collection of books available for borrowing.</p>
-        </div>
-        <div class="link-card">
-            <a href="<%= request.getContextPath() %>/borrowBook.jsp">📖 Borrow a Book</a>
-            <p>Select and borrow a book from the library collection.</p>
-        </div>
-        <div class="link-card">
-            <a href="<%= request.getContextPath() %>/viewBorrowedBooks.jsp">📋 My Borrowed Books</a>
-            <p>View and manage the books you’ve currently borrowed.</p>
-        </div>
-    </div>
+                <p>Browse the collection of books available for borrowing.</p>
+            </div>
+            <div class="link-card">
+                <a href="BorrowBookServlet?action=borrowBook">📚 Borrow Books</a>
 
-    <!-- Borrowed Books Panel -->
-    <div class="borrowed-books-panel">
-        <h3>Currently Borrowed Books</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% 
-                    // Example data, replace with dynamic content from the database
-                    String[][] borrowedBooks = { 
-                        {"Introduction to Java", "James Gosling", "2024-11-10", "On Time"},
-                        {"Advanced Python", "Guido van Rossum", "2024-11-05", "Overdue"},
-                        {"History of AI", "Alan Turing", "2024-11-15", "On Time"}
-                    };
-                    for (String[] book : borrowedBooks) { 
-                        String statusClass = "Overdue".equals(book[3]) ? "status-overdue" : "status-on-time";
-                %>
+                <p>Select and borrow a book from the library collection.</p>
+            </div>
+            <div class="link-card">
+                <a href="LibrarianServlet?action=viewBorrowedBooks">📚 View Borrowed Books</a>
+                <p>View and manage the books you’ve currently borrowed.</p>
+            </div>
+           
+            
+        </div>
+    
+        <!-- Borrowed Books Panel -->
+        <div class="borrowed-books-panel">
+            <h3>Currently Borrowed Books</h3>
+            <table>
+                <thead>
                     <tr>
-                        <td><%= book[0] %></td>
-                        <td><%= book[1] %></td>
-                        <td><%= book[2] %></td>
-                        <td><span class="<%= statusClass %>"><%= book[3] %></span></td>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
                     </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Notifications Panel -->
-    <div class="notifications-panel">
-        <h3>Notifications</h3>
-        <div class="notification-item">
-            <p><strong>Overdue:</strong> "Advanced Python" was due on 2024-11-05. Please return it as soon as possible to avoid additional fines.</p>
+                </thead>
+                <tbody>
+                    <% for (BorrowedBook book : borrowedBooks) { %>
+                        <tr>
+                            <td><%= book.getTitle() %></td>
+                            <td><%= book.getAuthor() %></td>
+                            <td><%= book.getDueDate() %></td>
+                            <td>
+                                <span class="<%= "Overdue".equals(book.getStatus()) ? "status-overdue" : "status-on-time" %>">
+                                    <%= book.getStatus() %>
+                                </span>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
-        <div class="notification-item">
-            <p>New arrivals in <strong>Technology</strong> category! Check out the latest books in the <a href="<%= request.getContextPath() %>/viewBooks.jsp">Available Books</a> section.</p>
-        </div>
-        <!-- More notifications can be added here -->
     </div>
-</div>
-</body>
-</html>
+    </body>
+    </html>

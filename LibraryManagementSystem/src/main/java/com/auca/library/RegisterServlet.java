@@ -1,24 +1,25 @@
-// src/main/java/com/auca/library/RegisterServlet.java
-
 package com.auca.library;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-@WebServlet("/registerServlet")
+
+//@WebServlet("/RegisterServlet") 
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
-        String password = request.getParameter("password"); // plain password from user
+        String password = request.getParameter("password");
         String role = request.getParameter("role");
         String membership = request.getParameter("membership");
+        String phoneNumber = request.getParameter("phoneNumber");
 
         // Location details
+        String province = request.getParameter("province");
         String district = request.getParameter("district");
         String sector = request.getParameter("sector");
         String cell = request.getParameter("cell");
@@ -27,7 +28,7 @@ public class RegisterServlet extends HttpServlet {
         // Hash the password before storing it
         String hashedPassword = PasswordUtils.hashPassword(password);
 
-        boolean isRegistered = saveUserToDatabase(username, hashedPassword, role, membership, district, sector, cell, village);
+        boolean isRegistered = saveUserToDatabase(username, hashedPassword, role, membership, phoneNumber, province, district, sector, cell, village);
 
         if (isRegistered) {
             response.sendRedirect("login.jsp?message=registered");
@@ -37,15 +38,16 @@ public class RegisterServlet extends HttpServlet {
     }
 
     private boolean saveUserToDatabase(String username, String hashedPassword, String role, String membership,
-                                       String district, String sector, String cell, String village) {
+                                       String phoneNumber, String province, String district, String sector, String cell, String village) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            // Insert into location table first
-            String locationSql = "INSERT INTO locations (district, sector, cell, village) VALUES (?, ?, ?, ?)";
+            // Insert into locations table
+            String locationSql = "INSERT INTO locations (province, district, sector, cell, village) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement locationStmt = connection.prepareStatement(locationSql, PreparedStatement.RETURN_GENERATED_KEYS);
-            locationStmt.setString(1, district);
-            locationStmt.setString(2, sector);
-            locationStmt.setString(3, cell);
-            locationStmt.setString(4, village);
+            locationStmt.setString(1, province);
+            locationStmt.setString(2, district);
+            locationStmt.setString(3, sector);
+            locationStmt.setString(4, cell);
+            locationStmt.setString(5, village);
             locationStmt.executeUpdate();
 
             // Get the generated location ID
@@ -55,14 +57,15 @@ public class RegisterServlet extends HttpServlet {
                 locationId = generatedKeys.getInt(1);
             }
 
-            // Insert into users table with hashed password
-            String userSql = "INSERT INTO users (username, password, role, membership, location_id) VALUES (?, ?, ?, ?, ?)";
+            // Insert into users table with status as 'pending'
+            String userSql = "INSERT INTO users (username, password, role, membership, phoneNumber, location_id, status) VALUES (?, ?, ?, ?, ?, ?, 'pending')";
             PreparedStatement userStmt = connection.prepareStatement(userSql);
             userStmt.setString(1, username);
-            userStmt.setString(2, hashedPassword); // Save hashed password
+            userStmt.setString(2, hashedPassword);
             userStmt.setString(3, role);
             userStmt.setString(4, membership);
-            userStmt.setInt(5, locationId);
+            userStmt.setString(5, phoneNumber);
+            userStmt.setInt(6, locationId);
 
             int rowsAffected = userStmt.executeUpdate();
             return rowsAffected > 0;

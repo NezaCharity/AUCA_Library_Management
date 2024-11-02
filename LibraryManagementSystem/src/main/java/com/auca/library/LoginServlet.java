@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-@WebServlet("/loginServlet")
+//@WebServlet("/loginServlet")
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,10 +32,10 @@ public class LoginServlet extends HttpServlet {
             // Redirect based on role
             switch (role) {
                 case "librarian":
-                    response.sendRedirect("webapp/librarianDashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/librarianDashboard.jsp");
                     break;
                 case "teacher":
-                    response.sendRedirect("webapp/teacherDashboard.jsp");
+                    response.sendRedirect(request.getContextPath() + "/teacherDashboard.jsp");
                     break;
                 case "student":
                 response.sendRedirect(request.getContextPath() + "/studentDashboard.jsp");
