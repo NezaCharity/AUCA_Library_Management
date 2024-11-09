@@ -187,7 +187,12 @@
         "Muhima Cell 1": ["Village MH1", "Village MH2"],
         "Muhima Cell 2": ["Village MH3", "Village MH4"]
     };
+
+
 </script>
+<script>
+
+
 
 
     function updateDistricts() {
