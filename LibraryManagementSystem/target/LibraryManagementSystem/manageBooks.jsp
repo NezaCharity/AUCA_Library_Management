@@ -139,8 +139,8 @@
                             <td><%= book.getCategory() %></td>
                             <td><%= book.getStatus() %></td>
                             <td>
-                                <a href="editBook.jsp?id=<%= book.getId() %>" class="edit-btn">Edit</a>
-                                <a href="deleteBook?id=<%= book.getId() %>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
+                                <a href="EditBookServlet?id=<%= book.getId() %>" class="edit-btn">Edit</a>
+                                <a href="DeleteBookServlet?id=<%= book.getId() %>" onclick="return confirm('Are you sure you want to delete this book?');">Delete</a>
                             </td>
                         </tr>
                 <%     } 

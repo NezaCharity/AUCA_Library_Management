@@ -97,5 +97,42 @@
         <url-pattern>/AssignRoomServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>EditBookServlet</servlet-name>
+        <servlet-class>com.auca.library.EditBookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditBookServlet</servlet-name>
+        <url-pattern>/EditBookServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteBookServlet</servlet-name>
+        <servlet-class>com.auca.library.DeleteBookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteBookServlet</servlet-name>
+        <url-pattern>/DeleteBookServlet</url-pattern>
+    </servlet-mapping>
+
+<servlet>
+        <servlet-name>ReturnBookServlet</servlet-name>
+        <servlet-class>com.auca.library.ReturnBookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReturnBookServlet</servlet-name>
+        <url-pattern>/ReturnBookServlet</url-pattern>
+    </servlet-mapping>
+
+<servlet>
+        <servlet-name>ViewDashboardServlet</servlet-name>
+        <servlet-class>com.auca.library.ViewDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewDashboardServlet</servlet-name>
+        <url-pattern>/ViewDashboardServlet</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>
+

@@ -97,60 +97,63 @@
             <div class="link-card">
                 <a href="LibrarianServlet?action=manageBooks">📚 Manage Books</a>
                <br>
-               <a href="manageBooks.jsp">Click here to manage your books</a>
-                <p>Add, edit, or delete books from the library collection.</p>
+               <!-- <a href="manageBooks.jsp">Click here to manage your books</a>
+                <p>Add, edit, or delete books from the library collection.</p> -->
             </div>
             <div class="link-card">
                 
                 <a href="LibrarianServlet?action=approveMembers">✔️ Approve Members</a>
                <br>
-               <a href="approveMembers.jsp">click here to approve members</a>
+               <!-- <a href="approveMembers.jsp">click here to approve members</a>
               
                 
-                <p>Review and approve pending membership requests.</p>
+                <p>Review and approve pending membership requests.</p> -->
             </div>
             <div class="link-card">
                 
                 <a href="LibrarianServlet?action=assignShelf">🗄️ Assign Shelf</a>
                 <br>
-                <a href="AssignShelfServlet?action=assignShelf"> click here to Assign Shelf</a>
+                <!-- <a href="AssignShelfServlet?action=assignShelf"> click here to Assign Shelf</a>
 
                
-                <p>Assign books to a specific shelf in the library.</p>
+                <p>Assign books to a specific shelf in the library.</p> -->
             </div>
             <div class="link-card">
                
                 <a href="LibrarianServlet?action=assignRoom">🏢 Assign Room</a>
                 <br>
-                <a href="AssignRoomServlet?action=assignRoom"> click here to Assign Rooms</a>
+                <!-- <a href="AssignRoomServlet?action=assignRoom"> click here to Assign Rooms</a>
                
-                <p>Assign shelves to a specific room in the library.</p>
+                <p>Assign shelves to a specific room in the library.</p> -->
             </div>
             <div class="link-card">
                 
                 <a href="LibrarianServlet?action=registerBook">📖 Register Book</a>
                 <br>
-                <a href="registerBook.jsp">click here to register your Books</a>
+                <!-- <a href="registerBook.jsp">click here to register your Books</a>
                
-                <p>Register new books to the library collection.</p>
+                <p>Register new books to the library collection.</p> -->
             </div>
             <div class="link-card">
                 
                 <a href="LibrarianServlet?action=inventoryReport">📊 Inventory Report</a>
                 <br>
-                <a href="inventoryReport">click here to check your inventory</a>
+                <!-- <a href="inventoryReport">click here to check your inventory</a>
                
-                <p>View detailed reports on library resources.</p>
+                <p>View detailed reports on library resources.</p> -->
             </div>
             <div class="link-card">
                 
-                <a href="LibrarianServlet?action=createShelf.jsp">📚 Create Shelf</a>
+                <a href="LibrarianServlet?action=createShelf">📚 Create Shelf</a>
                 <br>
-                <a href="createShelf.jsp">click here to create shelf</a>
+                <!-- <a href="createShelf.jsp">click here to create shelf</a>
                
-                <p>Create shelves to assign books here.</p>
+                <p>Create shelves to assign books here.</p> -->
             </div>
-            
+            <div class="link-card">
+                <a href="PhoneLookupServlet?action=phonelookup"> Check Users location using their phone number</a>
+
+            </div>
 
         </div>
     

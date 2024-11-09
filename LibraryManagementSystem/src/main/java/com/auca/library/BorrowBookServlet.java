@@ -18,7 +18,6 @@ public class BorrowBookServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve available books and forward to borrowBook.jsp
         List<Book> availableBooks = getAvailableBooks();
         request.setAttribute("availableBooks", availableBooks);
         request.getRequestDispatcher("borrowBook.jsp").forward(request, response);
@@ -28,50 +27,50 @@ public class BorrowBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         String role = (String) session.getAttribute("role");
-
-        // Check user role for borrow eligibility
-        if (session == null || role == null || (!"student".equals(role) && !"teacher".equals(role))) {
+    
+        if ("HOD".equals(role) || "Dean".equals(role) || "Teacher".equals(role)) {
+            response.sendRedirect("accessDenied.jsp?error=accessDenied");
+            return;
+        } else if (session == null || role == null || (!"student".equals(role) && !"teacher".equals(role))) {
             response.sendRedirect("login.jsp?error=accessDenied");
             return;
         }
-
+    
         String bookId = request.getParameter("bookId");
         String username = (String) session.getAttribute("username");
-
+        String returnDateStr = request.getParameter("returnDate");
+    
         try (Connection connection = DatabaseConnection.getConnection()) {
-            connection.setAutoCommit(false); // Start transaction
-
-            // Step 1: Check if the user has reached the borrow limit
+            connection.setAutoCommit(false);
+    
             if (hasReachedBorrowLimit(connection, username)) {
                 response.sendRedirect("borrowBook.jsp?error=borrowLimitReached");
                 return;
             }
-
-            // Step 2: Check if the book is available for borrowing
+    
             if (!isBookAvailable(connection, bookId)) {
                 response.sendRedirect("borrowBook.jsp?error=bookNotAvailable");
                 return;
             }
-
-            // Step 3: Process the borrow request with dates
-            boolean borrowSuccess = processBorrowRequest(connection, bookId, username);
-
-if (borrowSuccess) {
-    connection.commit(); // Commit transaction if everything went well
-    response.sendRedirect("studentDashboard.jsp?message=borrowSuccess");
-} else {
-    connection.rollback(); // Rollback if borrow process failed
-    response.sendRedirect("borrowBook.jsp?error=borrowFailed");
-}
-
-
+    
+            LocalDate returnDate = LocalDate.parse(returnDateStr);
+            boolean borrowSuccess = processBorrowRequest(connection, bookId, username, returnDate);
+    
+            if (borrowSuccess) {
+                connection.commit();
+                response.sendRedirect("studentDashboard.jsp?message=borrowSuccess");
+            } else {
+                connection.rollback();
+                response.sendRedirect("borrowBook.jsp?error=borrowFailed");
+            }
+    
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error processing borrow request", e);
             response.sendRedirect("borrowBook.jsp?error=databaseError");
         }
     }
+    
 
-    // Method to retrieve available books from the database
     private List<Book> getAvailableBooks() {
         List<Book> books = new ArrayList<>();
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -96,14 +95,30 @@ if (borrowSuccess) {
     }
 
     private boolean hasReachedBorrowLimit(Connection connection, String username) throws SQLException {
-        String borrowLimitSql = "SELECT COUNT(*) AS borrow_count FROM borrows WHERE user_id = (SELECT id FROM users WHERE username = ?) AND return_date IS NULL";
-        try (PreparedStatement statement = connection.prepareStatement(borrowLimitSql)) {
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
+        // Get user's membership and associated max_books limit
+        String membershipQuery = "SELECT memberships.max_books FROM users " +
+                                 "JOIN memberships ON users.membership = memberships.type " +
+                                 "WHERE users.username = ?";
+        try (PreparedStatement membershipStmt = connection.prepareStatement(membershipQuery)) {
+            membershipStmt.setString(1, username);
+            ResultSet membershipRs = membershipStmt.executeQuery();
 
-            if (resultSet.next()) {
-                int borrowCount = resultSet.getInt("borrow_count");
-                return borrowCount >= 5;
+            if (membershipRs.next()) {
+                int maxBooks = membershipRs.getInt("max_books");
+
+                // Check the current borrowed books count
+                String borrowCountQuery = "SELECT COUNT(*) AS borrow_count FROM borrows " +
+                                          "WHERE user_id = (SELECT id FROM users WHERE username = ?) " +
+                                          "AND return_date IS NULL";
+                try (PreparedStatement countStmt = connection.prepareStatement(borrowCountQuery)) {
+                    countStmt.setString(1, username);
+                    ResultSet countRs = countStmt.executeQuery();
+
+                    if (countRs.next()) {
+                        int borrowedCount = countRs.getInt("borrow_count");
+                        return borrowedCount >= maxBooks;
+                    }
+                }
             }
         }
         return false;
@@ -123,11 +138,36 @@ if (borrowSuccess) {
         return false;
     }
 
+    private boolean processBorrowRequest(Connection connection, String bookId, String username, LocalDate returnDate) throws SQLException {
+        LocalDate borrowDate = LocalDate.now();
+    
+        String borrowSql = "INSERT INTO borrows (user_id, book_id, borrow_date, due_date, return_date, fine) " +
+                "VALUES ((SELECT id FROM users WHERE username = ?), ?, ?, ?, NULL, 0.0)";
+        try (PreparedStatement statement = connection.prepareStatement(borrowSql)) {
+            statement.setString(1, username);
+            statement.setString(2, bookId);
+            statement.setDate(3, Date.valueOf(borrowDate));
+            statement.setDate(4, Date.valueOf(returnDate));
+    
+            int rowsAffected = statement.executeUpdate();
+    
+            if (rowsAffected > 0) {
+                String updateBookStatusSql = "UPDATE books SET status = 'borrowed' WHERE id = ?";
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateBookStatusSql)) {
+                    updateStmt.setString(1, bookId);
+                    updateStmt.executeUpdate();
+                }
+            }
+    
+            return rowsAffected > 0;
+        }
+    }
+    
+
     private boolean processBorrowRequest(Connection connection, String bookId, String username) throws SQLException {
         LocalDate borrowDate = LocalDate.now();
-        LocalDate dueDate = borrowDate.plusDays(14); // 2-week loan period
+        LocalDate dueDate = borrowDate.plusDays(14);
     
-        // Insert a new borrow record
         String borrowSql = "INSERT INTO borrows (user_id, book_id, borrow_date, due_date, return_date, fine) " +
                 "VALUES ((SELECT id FROM users WHERE username = ?), ?, ?, ?, NULL, 0.0)";
         try (PreparedStatement statement = connection.prepareStatement(borrowSql)) {
@@ -138,7 +178,6 @@ if (borrowSuccess) {
     
             int rowsAffected = statement.executeUpdate();
             
-            // If borrow record was inserted successfully, update the book status
             if (rowsAffected > 0) {
                 String updateBookStatusSql = "UPDATE books SET status = 'borrowed' WHERE id = ?";
                 try (PreparedStatement updateStmt = connection.prepareStatement(updateBookStatusSql)) {
@@ -150,5 +189,4 @@ if (borrowSuccess) {
             return rowsAffected > 0;
         }
     }
-    
 }
